@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Grid from './Grid'
-import Keyboard from './Keyboard'
 
 const WORD_LIST = [
   'REACT', 'NEXT', 'CLOUD', 'BUILD', 'MAGIC', 'SPARK', 'QUICK', 'WORLD',
@@ -13,14 +12,11 @@ const WORD_LIST = [
 const WORD_LENGTH = 5
 const MAX_GUESSES = 6
 
-type LetterState = 'correct' | 'present' | 'absent' | 'empty' | 'tbd'
-
 export default function WordGuessGame() {
   const [answer, setAnswer] = useState('')
   const [guesses, setGuesses] = useState<string[]>([])
   const [currentGuess, setCurrentGuess] = useState('')
   const [gameState, setGameState] = useState<'playing' | 'won' | 'lost'>('playing')
-  const [letterStates, setLetterStates] = useState<Record<string, LetterState>>({})
   const [shake, setShake] = useState(false)
 
   // Initialize game
@@ -67,31 +63,6 @@ export default function WordGuessGame() {
     const newGuesses = [...guesses, currentGuess]
     setGuesses(newGuesses)
 
-    // Update letter states
-    const newLetterStates = { ...letterStates }
-    const answerArray = answer.split('')
-    const guessArray = currentGuess.split('')
-
-    // First pass: mark correct letters
-    guessArray.forEach((letter, i) => {
-      if (letter === answerArray[i]) {
-        newLetterStates[letter] = 'correct'
-      }
-    })
-
-    // Second pass: mark present and absent letters
-    guessArray.forEach((letter, i) => {
-      if (letter !== answerArray[i]) {
-        if (answerArray.includes(letter) && newLetterStates[letter] !== 'correct') {
-          newLetterStates[letter] = 'present'
-        } else if (!newLetterStates[letter]) {
-          newLetterStates[letter] = 'absent'
-        }
-      }
-    })
-
-    setLetterStates(newLetterStates)
-
     // Check win/loss conditions
     if (currentGuess === answer) {
       setGameState('won')
@@ -108,7 +79,6 @@ export default function WordGuessGame() {
     setGuesses([])
     setCurrentGuess('')
     setGameState('playing')
-    setLetterStates({})
     setShake(false)
   }
 
@@ -123,13 +93,14 @@ export default function WordGuessGame() {
         shake={shake}
       />
 
-      <Keyboard
-        onKeyPress={handleLetter}
-        onDelete={handleDelete}
-        onSubmit={handleSubmit}
-        letterStates={letterStates}
-        disabled={gameState !== 'playing'}
-      />
+      {/* Instructions */}
+      {gameState === 'playing' && (
+        <div className="text-center mt-4 mb-2 fade-in">
+          <p className="text-slate-400 text-sm sm:text-base font-medium">
+            Type your guess and press <span className="glass px-2 py-1 rounded-md text-blue-400 border border-blue-400/30">Enter</span>
+          </p>
+        </div>
+      )}
 
       {gameState !== 'playing' && (
         <div className="text-center mt-4 sm:mt-6 fade-in">
