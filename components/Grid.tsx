@@ -15,10 +15,10 @@ export default function Grid({ guesses, currentGuess, answer, maxGuesses, wordLe
   const empRows = Array.from({ length: maxGuesses - guesses.length - (currentGuess ? 1 : 0) })
 
   return (
-    <div className="grid gap-1 mb-4">
+    <div className="grid gap-2 mb-8">
       {/* Completed guesses */}
       {guesses.map((guess, i) => (
-        <div key={i} className="flex gap-1">
+        <div key={i} className="flex gap-2 justify-center">
           {guess.split('').map((letter, j) => {
             let state: 'correct' | 'present' | 'absent' = 'absent'
 
@@ -37,7 +37,7 @@ export default function Grid({ guesses, currentGuess, answer, maxGuesses, wordLe
 
       {/* Current guess */}
       {currentGuess && (
-        <div className={`flex gap-1 ${shake ? 'shake' : ''}`}>
+        <div className={`flex gap-2 justify-center ${shake ? 'shake' : ''}`}>
           {currentGuess.split('').map((letter, i) => (
             <Tile key={i} letter={letter} state="tbd" animate />
           ))}
@@ -49,7 +49,7 @@ export default function Grid({ guesses, currentGuess, answer, maxGuesses, wordLe
 
       {/* Empty rows */}
       {empRows.map((_, i) => (
-        <div key={`empty-row-${i}`} className="flex gap-1">
+        <div key={`empty-row-${i}`} className="flex gap-2 justify-center">
           {Array.from({ length: wordLength }).map((_, j) => (
             <Tile key={j} letter="" state="empty" />
           ))}

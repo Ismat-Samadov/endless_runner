@@ -132,19 +132,34 @@ export default function WordGuessGame() {
       />
 
       {gameState !== 'playing' && (
-        <div className="text-center mt-4">
+        <div className="text-center mt-6 fade-in">
           {gameState === 'won' ? (
-            <div className="text-green-400 text-2xl mb-4">
-              Congratulations! You won!
+            <div className="mb-6">
+              <div className="text-5xl mb-2">🎉</div>
+              <div className="text-3xl font-bold text-green-400 mb-2 drop-shadow-lg">
+                Amazing!
+              </div>
+              <div className="text-lg text-slate-400">
+                You guessed the word in {guesses.length} {guesses.length === 1 ? 'try' : 'tries'}!
+              </div>
             </div>
           ) : (
-            <div className="text-red-400 text-2xl mb-4">
-              Game Over! The word was: {answer}
+            <div className="mb-6">
+              <div className="text-5xl mb-2">😔</div>
+              <div className="text-3xl font-bold text-red-400 mb-2 drop-shadow-lg">
+                Game Over
+              </div>
+              <div className="text-lg text-slate-400">
+                The word was: <span className="text-white font-bold text-2xl">{answer}</span>
+              </div>
             </div>
           )}
           <button
             onClick={resetGame}
-            className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700
+                       text-white font-bold py-4 px-10 rounded-xl
+                       shadow-xl hover:shadow-2xl transform hover:scale-105 active:scale-95
+                       transition-all duration-200 border-2 border-blue-400"
           >
             Play Again
           </button>

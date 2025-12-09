@@ -17,12 +17,12 @@ const KEYBOARD_ROWS = [
 ]
 
 export default function Keyboard({ onKeyPress, onDelete, onSubmit, letterStates, disabled }: KeyboardProps) {
-  const getKeyColor = (key: string) => {
+  const getKeyStyles = (key: string) => {
     const state = letterStates[key]
-    if (state === 'correct') return 'bg-correct'
-    if (state === 'present') return 'bg-present'
-    if (state === 'absent') return 'bg-gray-600'
-    return 'bg-gray-500'
+    if (state === 'correct') return 'bg-correct border-green-600 shadow-lg shadow-green-900/30'
+    if (state === 'present') return 'bg-present border-yellow-600 shadow-lg shadow-yellow-900/30'
+    if (state === 'absent') return 'bg-slate-600 border-slate-700 shadow-md'
+    return 'bg-slate-700 border-slate-600 shadow-lg hover:bg-slate-600'
   }
 
   const handleClick = (key: string) => {
@@ -38,9 +38,9 @@ export default function Keyboard({ onKeyPress, onDelete, onSubmit, letterStates,
   }
 
   return (
-    <div className="w-full max-w-lg">
+    <div className="w-full max-w-2xl px-2">
       {KEYBOARD_ROWS.map((row, i) => (
-        <div key={i} className="flex gap-1 justify-center mb-1">
+        <div key={i} className="flex gap-1.5 justify-center mb-2">
           {row.map((key) => {
             const isSpecial = key === 'ENTER' || key === 'DELETE'
             return (
@@ -49,12 +49,13 @@ export default function Keyboard({ onKeyPress, onDelete, onSubmit, letterStates,
                 onClick={() => handleClick(key)}
                 disabled={disabled}
                 className={`
-                  ${isSpecial ? 'px-3 text-xs' : 'w-9'}
-                  h-14 rounded font-bold uppercase
-                  ${getKeyColor(key)}
-                  hover:opacity-80
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  transition-all
+                  ${isSpecial ? 'px-4 text-xs min-w-[60px]' : 'w-10 md:w-12'}
+                  h-14 rounded-lg font-bold uppercase border-2
+                  ${getKeyStyles(key)}
+                  hover:scale-105 active:scale-95
+                  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                  transition-all duration-150
+                  text-white
                 `}
               >
                 {key}
